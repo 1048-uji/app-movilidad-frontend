@@ -1,0 +1,14 @@
+<div class="left-sidebar">
+    <div class="menu">
+        <button *ngIf="!isLoggedIn()" (click)="login()">Iniciar sesión</button>
+        <button *ngIf="isLoggedIn()" (click)="loginOut()">Cerrar sesión</button>
+        <ul>
+          <li><a (click)="showDetails('places')"><img src="/assets/place.png" alt="Sitios de interés" title="Sitios de interés"/><span>Sitios de interés</span></a></li>
+          <li><a (click)="showDetails('vehicles')"><img src="/assets/vehicle.png" alt="Vehículos" title="Vehículos"/><span>Vehículos</span></a></li>
+          <li><a (click)="showDetails('routes')"><img src="/assets/route.png" alt="Rutas" title="Rutas"/><span>Rutas</span></a></li>
+        </ul>
+    </div>
+</div>
+<app-place-of-interest *ngIf="showPlaces"></app-place-of-interest>
+<app-routes *ngIf="showRoutes"></app-routes>
+<app-vehicle *ngIf="showVehicles"></app-vehicle>

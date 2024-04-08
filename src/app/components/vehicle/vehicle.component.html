@@ -1,0 +1,86 @@
+<div class="container-vehicles">
+    <div><h1 class="h1-vehicles">Vehículos</h1></div>
+    <div *ngIf="!showAddForm && !showEditForm">
+        <div class="top-bar">
+            <input class="search-bar" type="text" [(ngModel)]="searchTerm" (input)="search()">
+            <button class="add-button" (click)="showAddForm = true">Agregar vehículo</button>
+        </div>
+        <div>
+            <ul class="vehicle-list">
+                <li class="list-item" *ngFor="let vehicle of filteredVehicles">
+                    <div class="vehicle-details">
+                        <p class="vehicle-name">Nombre: {{ vehicle.name }}</p>
+                        <p class="vehicle-registration">Matrícula: {{ vehicle.registration }}</p>
+                        <p class="vehicle-brand">Marca: {{ vehicle.brand }}</p>
+                        <p class="vehicle-model">Modelo: {{ vehicle.model }}</p>
+                        <p class="vehicle-carbType">Tipo de combustible: {{ vehicle.carbType }}</p>
+                        <p class="vehicle-consum">Consumo: {{ vehicle.consum }}</p>
+                    </div>
+                    <div class="button-container">
+                        <button [ngClass]="(vehicle.fav ? 'fav-button' : 'nofav-button')" (click)="toggleFavorite(vehicle)"></button>
+                        <button class="edit-button" (click)="showEditInput(vehicle)"></button>
+                        <button class="delete-button" (click)="deleteVehicle(vehicle.id)"></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-container" *ngIf="showAddForm">
+        <h2>Agregar vehículo</h2>
+        <form id="vehicleForm" (submit)="addVehicle(newVehicle)">
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" [(ngModel)]="newVehicle.name" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="registration">Matrícula:</label>
+                <input type="text" [(ngModel)]="newVehicle.registration" id="registration" name="registration" required>
+            </div>
+            <div class="form-group">
+                <label for="brand">Marca:</label>
+                <input type="text" [(ngModel)]="newVehicle.brand" id="brand" name="brand" required>
+            </div>
+            <div class="form-group">
+                <label for="model">Modelo:</label>
+                <input type="text" [(ngModel)]="newVehicle.model" id="model" name="model">
+            </div>
+            <div class="form-group">
+                <label for="carbType">Tipo de Carburante:</label>
+                <select [(ngModel)]="newVehicle.carbType" id="carbType" name="carbType" required>
+                    <option *ngFor="let type of carbTypeOptions" [value]="type">{{ type }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="consum">Consumo (en litros/100km):</label>
+                <input type="number" [(ngModel)]="newVehicle.consum" id="consum" name="consum" required>
+            </div>
+            <div class="button-container">
+                <button type="button" id="cancelButton" (click)="cancelSave()">Cancelar</button>
+                <button type="submit" id="save">Guardar</button>
+            </div>
+            <div *ngIf="errorMsg" class="error-message">
+                {{ errorMsg }}
+            </div>
+        </form>
+    </div>
+    <div class="form-container" *ngIf="showEditForm">
+        <h2>Editar vehículo</h2>
+        <form id="vehicleForm">
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" [(ngModel)]="editingVehicle.name" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="registration">Matrícula:</label>
+                <input type="text" [(ngModel)]="editingVehicle.registration" id="registration" name="registration" required>
+            </div>
+            <div class="button-container">
+                <button type="button" id="cancelButton" (click)="cancelSave()">Cancelar</button>
+                <button type="submit" id="save" (click)="editVehicle(editingVehicle)">Guardar</button>
+            </div>
+            <div *ngIf="errorMsg" class="error-message">
+                {{ errorMsg }}
+            </div>
+        </form>
+    </div>
+</div>

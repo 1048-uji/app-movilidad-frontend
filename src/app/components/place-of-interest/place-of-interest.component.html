@@ -1,0 +1,58 @@
+<div class="container-places">
+    <div><h1 class="h1-places">Lugares de interés</h1></div>
+    <div *ngIf="!showAddForm">
+        <div class="top-bar">
+            <input class="search-bar" type="text" [(ngModel)]="searchTerm" (input)="search()">
+            <button class="add-button" (click)="showAddForm = true">Agregar lugar de interés</button>
+        </div>
+        <div>
+            <ul class="place-list">
+                <li class="list-item" *ngFor="let place of filteredPlacesOfInterest">
+                    <div class="names-places">
+                        <p class="place-name">{{ place.name }}</p>
+                        <p class="place-address">{{ place.address }}</p>
+                    </div>
+                    <div class="button-container">
+                        <button [ngClass]="place.fav ? 'fav-button' : 'nofav-button'" (click)="toggleFavorite(place)"></button>
+                        <button class="edit-button" (click)="showEditInput(place)"></button>
+                        <button class="delete-button" (click)="deletePlace(place.id)"></button>
+                    </div>
+                    <div *ngIf="showEditpop" class="popup-container">
+                        <p>Introduce el nuevo nombre</p>
+                        <input type="text" [(ngModel)]="newName" class="popup-content">
+                        <div class="buttons-container">
+                            <button (click)="editPlace(newName)" class="popup-button">Aceptar</button>
+                            <button (click)="showEditpop = false" class="popup-button">Cancelar</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-container" *ngIf="showAddForm">
+        <h2>Agregar lugar de interés</h2>
+        <form id="placeForm">
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" [(ngModel)]="newPlace.name" id="name" name="name" required>
+            </div>
+            <div class="form-group" id="coordinateGroup">
+                <label for="longitude">Longitud:</label>
+                <input type="number" [(ngModel)]="newPlace.lon" id="longitude" name="longitude">
+                <label for="latitude">Latitud:</label>
+                <input type="number" [(ngModel)]="newPlace.lat" id="latitude" name="latitude">
+            </div>
+            <div class="form-group">
+                <label for="address">Dirección:</label>
+                <input type="text" [(ngModel)]="newPlace.address" id="address" name="address">
+            </div>
+            <div class="button-container">
+                <button type="button" id="cancelButton" (click)="cancelSave()">Cancelar</button>
+                <button type="submit" id="save" (click)="addPlace(newPlace)">Guardar</button>
+            </div>
+            <div *ngIf="errorMsg" class="error-message">
+                {{ errorMsg }}
+              </div>
+        </form>
+    </div>    
+</div>

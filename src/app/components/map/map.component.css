@@ -1,0 +1,46 @@
+.map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-left: 5%;
+  }
+  
+  #map {
+    height: 100%;
+  }
+
+  .leaflet-control-geocoder-form {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilo para el botón de búsqueda */
+  .leaflet-control-geocoder-icon {
+    color: #007bff; /* Color del botón */
+  }
+  
+  /* Estilo para los resultados de búsqueda */
+  .leaflet-control-geocoder-results {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .leaflet-control-geocoder-result {
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .leaflet-control-geocoder-result:hover {
+    background-color: #f0f0f0; /* Color de fondo al pasar el mouse sobre un resultado */
+  }
+
+  input[type="text" i] {
+    width: 10000px;
+    padding-block: 1px;
+    padding-inline: 2px;
+}
