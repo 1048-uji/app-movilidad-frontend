@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,7 @@ export class RegisterComponent {
   password: string = '';
   username: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   register() {
     const requestBody = {
@@ -25,7 +26,7 @@ export class RegisterComponent {
 
     this.http.post<any>('https://appmovilidad.onrender.com/auth/register', requestBody)
       .subscribe(response => {
-        // Manejar la respuesta del registro
+        this.router.navigate(['/login']);
       });
   }
 }
