@@ -17,7 +17,7 @@ RUN npm install
 COPY . .
 
 # Construir la aplicación Angular en modo de producción
-RUN ng build --prod
+RUN ng serve
 
 # Exponer un puerto (no necesario para Render.com ya que usa su propio puerto)
 # EXPOSE 80
