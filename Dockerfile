@@ -1,6 +1,9 @@
 # Usar la imagen base de Node.js
 FROM node:18.18.2 as build
 
+# Instalar Angular CLI
+RUN npm install -g @angular/cli
+
 # Establecer el directorio de trabajo en /app
 WORKDIR /app
 
