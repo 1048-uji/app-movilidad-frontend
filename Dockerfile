@@ -1,5 +1,5 @@
 # Usar la imagen base de Node.js
-FROM node:latest as build
+FROM node:18.18.2 as build
 
 # Establecer el directorio de trabajo en /app
 WORKDIR /app
@@ -14,19 +14,10 @@ RUN npm install
 COPY . .
 
 # Construir la aplicación Angular en modo de producción
-RUN npm run build --prod
+RUN ng build --prod
 
-# Configurar el servidor web para servir la aplicación Angular
-FROM nginx:alpine
+# Exponer un puerto (no necesario para Render.com ya que usa su propio puerto)
+# EXPOSE 80
 
-# Eliminar la configuración de nginx existente
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copiar los archivos compilados de la aplicación Angular desde el primer contenedor al directorio de trabajo de nginx
-COPY --from=build /app/dist/* /usr/share/nginx/html/
-
-# Exponer el puerto 80 para que la aplicación esté disponible para conexiones entrantes
-EXPOSE 80
-
-# Comando de inicio para ejecutar nginx en primer plano
-CMD ["nginx", "-g", "daemon off;"]
+# Comando de inicio para ejecutar la aplicación Angular (en lugar de nginx)
+CMD ["npm", "start"]
