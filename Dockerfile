@@ -1,11 +1,14 @@
-# Use Nginx as a base image
+# Usa Nginx como imagen base
 FROM nginx:alpine
 
-# Copiar el archivo de configuración de Nginx en el contenedor
+# Copia el archivo de configuración de Nginx al contenedor
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copiar el archivo index.html desde el directorio de compilación de Angular al directorio de trabajo de Nginx
-COPY dist/app-movilidad-frontend/index.html /usr/share/nginx/html
+# Establece el directorio de trabajo en /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
+
+# Copia el archivo index.html desde el directorio src al directorio de trabajo de Nginx
+COPY src/index.html .
 
 # Exponer el puerto 80 para que la aplicación esté disponible para conexiones entrantes
 EXPOSE 80
