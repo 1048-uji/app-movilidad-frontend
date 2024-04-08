@@ -1,21 +1,32 @@
-# Usa una imagen de Node.js como base
-FROM node:18
+# Usar la imagen base de Node.js
+FROM node:latest as build
 
-# Establece el directorio de trabajo en 
-WORKDIR /src/main
+# Establecer el directorio de trabajo en /app
+WORKDIR /app
 
-# Copia el archivo package.json e package-lock.json a la raíz de la aplicación
-RUN npm install -g @angular/cli
+# Copiar el archivo package.json y package-lock.json (si existe) al directorio de trabajo
 COPY package*.json ./
 
-# Instala las dependencias
+# Instalar las dependencias del proyecto
 RUN npm install
 
-# Copia el resto de la aplicación al directorio de trabajo
+# Copiar todos los archivos del proyecto al directorio de trabajo
 COPY . .
 
-# Expón el puerto en el que se ejecutará la aplicación
-EXPOSE 3000
+# Construir la aplicación Angular en modo de producción
+RUN npm run build --prod
 
-# Define el comando por defecto para ejecutar la aplicación
-CMD ["npm", "start"]
+# Configurar el servidor web para servir la aplicación Angular
+FROM nginx:alpine
+
+# Eliminar la configuración de nginx existente
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copiar los archivos compilados de la aplicación Angular desde el primer contenedor al directorio de trabajo de nginx
+COPY --from=build /app/dist/* /usr/share/nginx/html/
+
+# Exponer el puerto 80 para que la aplicación esté disponible para conexiones entrantes
+EXPOSE 80
+
+# Comando de inicio para ejecutar nginx en primer plano
+CMD ["nginx", "-g", "daemon off;"]
