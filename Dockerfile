@@ -4,11 +4,8 @@ FROM nginx:alpine
 # Copia el archivo de configuración de Nginx al contenedor
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Establece el directorio de trabajo en /usr/share/nginx/html
-WORKDIR /usr/share/nginx/html
-
-# Copia el archivo index.html desde el directorio src al directorio de trabajo de Nginx
-COPY src/index.html .
+# Copia el archivo index.html desde el directorio dist al directorio de trabajo de Nginx
+COPY dist/index.html /usr/share/nginx/html/index.html
 
 # Exponer el puerto 80 para que la aplicación esté disponible para conexiones entrantes
 EXPOSE 80
