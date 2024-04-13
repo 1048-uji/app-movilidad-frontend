@@ -10,7 +10,7 @@
                 <li class="list-item" *ngFor="let route of filteredRoutes">
                     <div class="route-details" (click)="sendRoute(route)">
                         <p class="route-name">Nombre: {{ route.name }}</p>
-                        <p class="route-distance">Distancia: {{ route.distance }}</p>
+                        <p class="route-distance">Distancia: {{ route.distance | number:'1.2-2' }} Km</p>
                         <p class="route-duration">Duración: {{ route.duration }}</p>
                         <p class="route-type">Tipo: {{ route.type }}</p>
                     </div>

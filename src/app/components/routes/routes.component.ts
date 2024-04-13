@@ -196,12 +196,13 @@ export class RoutesComponent implements OnInit {
       end.address  = end.address;
       this.endCoords='';
     }
-    options.startLat = startCoords[0];
-    options.startLon = startCoords[1];
+    options.startLat = start.lat;
+    options.startLon = start.lon;
     options.startAddress  = start.address;
-    options.endLat = endCoords[0];
-    options.endLon = endCoords[1];
+    options.endLat = end.lat;
+    options.endLon = end.lon;
     options.endAddress  = end.address;
+    console.log(options)
     this.routeService.createRoute(options).subscribe(
       (response) => {
           const route: Route = response

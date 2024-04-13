@@ -15,29 +15,29 @@ export class RouteService {
   constructor(private http: HttpClient) { }
 
   getRoutes(){
-    return this.http.get<Route[]>(`${this.apiUrl}/routes/myroutes`);
+    return this.http.get<Route[]>(`${this.testAPI}/routes/myroutes`);
   }
 
   toggleFavorite(route: Route){
-    return this.http.put<Route>(`${this.apiUrl}/routes/addFav`, route);
+    return this.http.put<Route>(`${this.testAPI}/routes/addFav`, route);
   }
 
   deleteRoute(id: number){
-    return this.http.delete(`${this.apiUrl}/routes/${id}`);
+    return this.http.delete(`${this.testAPI}/routes/${id}`);
   }
 
   editRoute(route: Route){
-    return this.http.put<Route>(`${this.apiUrl}/routes/addFav`, route);
+    return this.http.put<Route>(`${this.testAPI}/routes/addFav`, route);
   }
 
   createRoute(options: RouteOptions){
-    return this.http.post<Route>(`${this.apiUrl}/routes/route`, options);
+    return this.http.post<Route>(`${this.testAPI}/routes/route`, options);
   }
   saveRoute(route: Route){
-    return this.http.post<Route>(`${this.apiUrl}/routes/save`, route);
+    return this.http.post<Route>(`${this.testAPI}/routes/save`, route);
   }
 
   getRoutePrice(route: Route, vehicleId: number){
-    return this.http.post<number>(`${this.apiUrl}/routes/Price/${vehicleId}`, route);
+    return this.http.post<number>(`${this.testAPI}/routes/Price/${vehicleId}`, route);
   }
 }

@@ -12,22 +12,22 @@ export class VehicleService {
   constructor(private http: HttpClient) { }
 
   getVehicles(){
-    return this.http.get<Vehicle[]>(`${this.apiUrl}/vehicle/vehicle`);
+    return this.http.get<Vehicle[]>(`${this.testAPI}/vehicle/vehicle`);
   }
 
   toggleFavorite(vehicle: Vehicle){
-    return this.http.put<Vehicle>(`${this.apiUrl}/vehicle`, vehicle);
+    return this.http.put<Vehicle>(`${this.testAPI}/vehicle`, vehicle);
   }
 
   deleteVehicle(id: number){
-    return this.http.delete(`${this.apiUrl}/vehicle/${id}`);
+    return this.http.delete(`${this.testAPI}/vehicle/${id}`);
   }
 
   editVehicle(vehicle: Vehicle){
-    return this.http.put<Vehicle>(`${this.apiUrl}/vehicle`, vehicle);
+    return this.http.put<Vehicle>(`${this.testAPI}/vehicle`, vehicle);
   }
 
   addVehicle(vehicle: Vehicle){
-    return this.http.post<Vehicle>(`${this.apiUrl}/vehicle/vehicle`, vehicle);
+    return this.http.post<Vehicle>(`${this.testAPI}/vehicle/vehicle`, vehicle);
   }
 }
