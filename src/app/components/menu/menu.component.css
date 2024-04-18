@@ -3,10 +3,12 @@
   }
 
   .menu button{
-    position: fixed;
-    margin: auto;
-    top: 10px;
-    justify-content: center;
+    width: 95%;    
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    text-align: center;
+    padding: 3px 5px;
+    margin-top: 5px;
   }
   
   .menu ul {   

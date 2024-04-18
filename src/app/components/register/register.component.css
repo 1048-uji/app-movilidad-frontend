@@ -1,0 +1,50 @@
+.register-container {
+    width: 400px; /* Ancho del rectángulo */
+    margin: 10% auto auto; /* Centra horizontalmente y posiciona verticalmente entre el 10% y la mitad */
+    padding: 20px; /* Espaciado interno */
+    border: 2px solid #ccc; /* Borde del rectángulo */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+    position: relative; /* Posicionamiento relativo */
+  }
+  
+  .register-container::before {
+    content: '';
+    display: inline-block;
+    height: 50%;
+    vertical-align: middle;
+  }
+  
+  .register-container h2 {
+    text-align: center; /* Centra el título */
+  }
+  
+  .form-group {
+    margin-bottom: 15px; /* Espaciado entre elementos del formulario */
+  }
+  
+  .form-group label {
+    display: block; /* Muestra las etiquetas en bloque */
+  }
+  
+  .form-group input {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde del input */
+    border-radius: 5px; /* Bordes redondeados */
+  }
+  
+  button[type="submit"] {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 10px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #007bff; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3; /* Color de fondo del botón al pasar por encima */
+  }
+  

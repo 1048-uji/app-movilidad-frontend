@@ -14,13 +14,13 @@
                         <p class="route-duration">Duración: {{ route.duration }}</p>
                         <p class="route-type">Tipo: {{ route.type }}</p>
                     </div>
-                    <p>
+                    <div class="calculate-container">
                         Vehiculo:
                         <select #selectedVehicleId id="startSaved" name="startSaved" required>
                             <option *ngFor="let vehicle of savedVehicles" [value]="vehicle.id">{{ vehicle.name }}</option>
                         </select>
                         <button (click)="getPrice(route, selectedVehicleId.value)" class="popup-button">Calcular</button>
-                    </p>
+                    </div>
                     
                     <div class="button-container">
                         <button [ngClass]="(route.fav ? 'fav-button' : 'nofav-button')" (click)="toggleFavorite(route)"></button>

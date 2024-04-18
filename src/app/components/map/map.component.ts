@@ -22,6 +22,8 @@ export class MapComponent implements AfterViewInit, OnInit {
 
   place: PlaceOfInterest = new PlaceOfInterest();
   route: Route = new Route();
+  previousPolyline: L.Polyline | null = null;
+  previousStarterMarker: any = null
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private placeOfInterestService: PlaceOfInterestService, private sharedDataService: SharedDataService, private routeService: RouteService) { }
   ngOnInit(): void {
@@ -45,6 +47,7 @@ export class MapComponent implements AfterViewInit, OnInit {
 
       // Escucha el evento click en el mapa
       map.on('click', (e) => {
+
         const lat = e.latlng.lat;
         const lng = e.latlng.lng;
     
@@ -103,14 +106,14 @@ export class MapComponent implements AfterViewInit, OnInit {
       });
       this.sharedDataService.route$.subscribe((routeSaved) => {
         if (routeSaved !== undefined && routeSaved !== null){
-          //console.log('Id Ruta: ', typeof(routeSaved.id), ' Favorito: ', typeof(routeSaved.fav));
-
           this.route = routeSaved.route;
           if (this.route.geometry.length > 0) {
             const coordinates = this.route.geometry.map(coord => L.latLng(parseFloat(coord[1]),parseFloat(coord[0])));
             let polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+            this.previousPolyline = polyline;
             map.fitBounds(polyline.getBounds());
             const startMarker = L.marker(coordinates[0]).addTo(map!);
+            this.previousStarterMarker = startMarker;
             const startPopupContent = `
               <div>
                 <p>Distancia: ${this.route.distance}km</p>
@@ -148,7 +151,12 @@ export class MapComponent implements AfterViewInit, OnInit {
                 });
               }
             });
-    startMarker.bindPopup(startPopupContent).openPopup();
+            map.on('popupclose', () => {
+              map.removeLayer(polyline);
+              map.removeLayer(startMarker);
+              map.closePopup();
+            });
+            startMarker.bindPopup(startPopupContent).openPopup();
           }
         }      
       });

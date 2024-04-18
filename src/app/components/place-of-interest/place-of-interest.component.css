@@ -7,41 +7,64 @@
     height: 100%;
     z-index: 500;
     background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-top-right-radius: 10px; /* Redondea solo la esquina superior derecha */
+    border-bottom-right-radius: 10px; /* Redondea solo la esquina inferior derecha */
+    overflow: hidden;
 }
 
 .top-bar {
-    position: relative;
-    height: 8%; 
-    width: 100%; 
+    width: 100%;
+    height: 8%;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
+    margin-bottom: 10px; /* Añade espacio entre la barra y la lista */
 }
 
 .search-bar {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     max-width: 80%;
     width: 100%;
     background-color: rgb(224, 223, 223);
 }
 
+.add-button {
+    width: 50%;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
 .place-list {
-    margin-top: 10%;
-    list-style: none; 
+    width: 95%;    
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    height: 82%; /* Ajusta según sea necesario */
+    margin-top: 25px;
+    margin-bottom: 10px; /* Añade espacio entre la lista y la barra */
     padding: 0;
+    list-style: none;
+    overflow-y: auto; /* Agrega scroll si es necesario */
 }
 
 .list-item {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px; 
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
 }
 
-.names-places{
-    margin-left: 5%;
+.names-places {
+    margin-left: 10px;
 }
 
 .place-name {
@@ -49,222 +72,54 @@
     margin-bottom: 5px;
 }
 
-
 .place-address {
     font-size: 14px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .button-container {
-    margin-right: auto;
-    margin-left: 10%;
     display: flex;
-    justify-content: flex-start;
 }
 
-.fav-button{
-    width: 20px; 
-    height: 20px; 
+.fav-button,
+.nofav-button,
+.edit-button,
+.delete-button {
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.fav-button {
     background-image: url('../../../assets/star-yellow.png');
-    background-size: cover; 
-    background-repeat: no-repeat;
-    border: none;
-    background-color: transparent;
 }
 
-.nofav-button{
-    width: 20px; 
-    height: 20px; 
+.nofav-button {
     background-image: url('../../../assets/star-empty.png');
-    background-size: cover; 
-    background-repeat: no-repeat;
-    border: none;
-    background-color: transparent;
 }
 
 .edit-button {
-    width: 20px; 
-    height: 20px; 
     background-image: url('../../../assets/edit.png');
-    background-size: cover; 
-    background-repeat: no-repeat;
-    border: none;
-    background-color: transparent;
 }
 
 .delete-button {
-    width: 20px; 
-    height: 20px; 
     background-image: url('../../../assets/delete.png');
-    background-size: cover; 
-    background-repeat: no-repeat;
-    border: none;
-    background-color: transparent;
 }
 
 .fav-button:not(:last-child),
 .nofav-button:not(:last-child),
 .edit-button:not(:last-child),
 .delete-button:not(:last-child) {
-    margin-right: 10px; /* Ajusta este valor según el espacio deseado */
-}
-
-.add-button {
-    position: absolute;
-    top: 75%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    left: 50%;
-    margin-top: 5%;
-    background-color: #007bff; /* Color de fondo del botón */
-    color: white; /* Color del texto */
-    border: none;
-    padding: 5px 10px; /* Espaciado interno del botón */
-    cursor: pointer;
+    margin-right: 5px;
 }
 
 .add-button:hover {
-    background-color: #0056b3; /* Color de fondo del botón al pasar el mouse sobre él */
+    background-color: #0056b3;
 }
 
 .h1-places {
     text-align: center;
-}
-
-.popup-container {
-    position: fixed;
-    top: 30%;
-    left: 50%;
-    width: 25%;
-    height: 25%;
-    background-color: white; 
-    display: flex;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; 
-    flex-direction: column;
-}
-
-.popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    max-width: 80%;
-    text-align: center;
-}
-
-.popup-buttons {
-    margin-top: 20px;
-}
-
-.popup-button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    margin: 0 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff; /* Color de fondo del botón */
-    color: white; /* Color del texto */
-    cursor: pointer;
-}
-
-.popup-button:hover {
-    background-color: #0056b3; /* Color de fondo del botón al pasar el mouse sobre él */
-}
-
-.button-container {
-    display: flex;
-    justify-content: space-between; /* Distribuye los elementos horizontalmente */
-}
-
-button[type="submit"], button[type="button"] {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-button[type="submit"]:hover, button[type="button"]:hover {
-    background-color: #0056b3;
-}
-
-
-.form-container {
-    width: 300px; /* Ajusta el ancho según tus necesidades */
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.form-group input[type="text"] {
-    width: calc(50% - 5px); /* Para que los campos de latitud y longitud estén uno al lado del otro */
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
-}
-
-.form-group input[type="text"]:first-child {
-    margin-right: 10px; /* Espacio entre los campos de latitud y longitud */
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-top: 6px;
-    margin-bottom: 16px;
-}
-
-input[type="text"]:required,
-input[type="number"]:required {
-    border-color: red; /* Cambia el borde a rojo para campos obligatorios no completados */
-}
-
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-button[type="submit"],
-button[type="button"] {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button[type="submit"]:hover,
-button[type="button"]:hover {
-    background-color: #0056b3;
 }
