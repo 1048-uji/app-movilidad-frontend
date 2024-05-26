@@ -8,7 +8,7 @@ import { Vehicle } from '../models/vehicle.model';
 export class VehicleService {
   private apiUrl = 'https://appmovilidad.onrender.com';
   private testAPI = 'http://localhost:3000';
-  private using = this.testAPI
+  private using = this.apiUrl
 
   constructor(private http: HttpClient) { }
 
