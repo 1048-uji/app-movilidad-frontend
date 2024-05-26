@@ -1,0 +1,53 @@
+<div class="profile-container">
+    <h2>Perfil del Usuario</h2>
+    <div *ngIf="!editMode">
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>Contraseña:</strong> ********</p>
+      <p><strong>Vehículo Predeterminado:</strong> {{ user.vehicleDefault }}</p>
+      <p><strong>Ruta Predeterminada:</strong> {{ user.routeDefault }}</p>
+      <button (click)="confirmPassword()">Modificar perfil</button>
+    </div>
+    <div *ngIf="editMode">
+      <h3>Modificar Perfil</h3>
+      <form (ngSubmit)="updateProfile()">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username" [(ngModel)]="user.username" name="username" required>
+        </div>
+        <div class="form-group">
+          <label for="vehicleDefault">Vehículo Predeterminado:</label>
+          <select #selectedVehicleId id="startSaved" name="startSaved" required>
+            <option *ngFor="let vehicle of filteredVehicles" [value]="vehicle.id">{{ vehicle.name }}</option>
+        </select>
+        </div>
+        <div class="form-group">
+          <label for="routeDefault">Ruta Predeterminada:</label>
+          <select id="routeDefault" [(ngModel)]="user.routeDefault" name="routeDefault">
+              <!-- Opción predeterminada -->
+              <option *ngIf="user.routeDefault" [ngValue]="user.routeDefault" [selected]="true">{{ user.routeDefault }}</option>
+              
+              <!-- Resto de opciones -->
+              <option *ngFor="let option of routeOptions" [ngValue]="option.value">{{ option.label }}</option>
+          </select>
+      </div>
+        <button type="submit">Guardar</button>
+        <button type="button" (click)="editMode = false">Cancelar</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Confirmación de contraseña -->
+  <div *ngIf="showPasswordConfirm">
+    <div class="password-confirm-container">
+      <h3>Confirma tu Contraseña</h3>
+      <input type="password" [(ngModel)]="password" placeholder="Contraseña">
+      <button (click)="checkPassword()">Confirmar</button>
+      <button (click)="showPasswordConfirm = false">Cancelar</button>
+      <div *ngIf="passwordError" class="error-message">{{ passwordError }}</div>
+    </div>
+  </div>

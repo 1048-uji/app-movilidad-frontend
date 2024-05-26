@@ -1,7 +1,15 @@
 <div class="left-sidebar">
     <div class="menu">
         <button *ngIf="!isLoggedIn()" (click)="login()">Iniciar sesión</button>
-        <button *ngIf="isLoggedIn()" (click)="loginOut()">Cerrar sesión</button>
+        <div *ngIf="isLoggedIn()" class="dropdown">
+          <button class="dropbtn">
+            Bienvenido, {{ decodedToken.username }}
+          </button>
+          <div class="dropdown-content">
+            <a (click)="showDetails('profile')">Ver Perfil</a>
+            <a href="#" (click)="logout()">Cerrar sesión</a>
+          </div>
+        </div>
         <ul>
           <li><a (click)="showDetails('places')"><img src="/assets/place.png" alt="Sitios de interés" title="Sitios de interés"/><span>Sitios de interés</span></a></li>
           <li><a (click)="showDetails('vehicles')"><img src="/assets/vehicle.png" alt="Vehículos" title="Vehículos"/><span>Vehículos</span></a></li>
@@ -12,3 +20,4 @@
 <app-place-of-interest *ngIf="showPlaces"></app-place-of-interest>
 <app-routes *ngIf="showRoutes"></app-routes>
 <app-vehicle *ngIf="showVehicles"></app-vehicle>
+<app-profile *ngIf="showProfile"></app-profile>

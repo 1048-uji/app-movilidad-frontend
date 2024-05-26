@@ -11,33 +11,34 @@ import { Vehicle } from '../models/vehicle.model';
 export class RouteService {
   private apiUrl = 'https://appmovilidad.onrender.com';
   private testAPI = 'http://localhost:3000';
+  private using = this.testAPI
 
   constructor(private http: HttpClient) { }
 
   getRoutes(){
-    return this.http.get<Route[]>(`${this.apiUrl}/routes/myroutes`);
+    return this.http.get<Route[]>(`${this.using}/routes/myroutes`);
   }
 
   toggleFavorite(route: Route){
-    return this.http.put<Route>(`${this.apiUrl}/routes/addFav`, route);
+    return this.http.put<Route>(`${this.using}/routes/addFav`, route);
   }
 
   deleteRoute(id: number){
-    return this.http.delete(`${this.apiUrl}/routes/${id}`);
+    return this.http.delete(`${this.using}/routes/${id}`);
   }
 
   editRoute(route: Route){
-    return this.http.put<Route>(`${this.apiUrl}/routes/addFav`, route);
+    return this.http.put<Route>(`${this.using}/routes/addFav`, route);
   }
 
   createRoute(options: RouteOptions){
-    return this.http.post<Route>(`${this.apiUrl}/routes/route`, options);
+    return this.http.post<Route>(`${this.using}/routes/route`, options);
   }
   saveRoute(route: Route){
-    return this.http.post<Route>(`${this.apiUrl}/routes/save`, route);
+    return this.http.post<Route>(`${this.using}/routes/save`, route);
   }
 
   getRoutePrice(route: Route, vehicleId: number){
-    return this.http.post<number>(`${this.apiUrl}/routes/Price/${vehicleId}`, route);
+    return this.http.post<number>(`${this.using}/routes/Price/${vehicleId}`, route);
   }
 }
