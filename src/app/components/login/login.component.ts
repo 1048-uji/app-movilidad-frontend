@@ -26,7 +26,7 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.http.post<any>(this.apiUrl+'/auth/login', requestBody)
+    this.http.post<any>(this.testAPI+'/auth/login', requestBody)
       .subscribe(response => {
         this.token = response.token;
         sessionStorage.setItem('token', this.token);

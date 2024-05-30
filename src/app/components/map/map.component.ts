@@ -82,9 +82,7 @@ export class MapComponent implements AfterViewInit, OnInit {
             const saveButton = document.getElementById('saveButton');
             if (saveButton) {
               saveButton.addEventListener('click', () => {
-                console.log('click');
                 const savePlace: PlaceOfInterest = Object.assign({}, this.place);
-                console.log(savePlace);
                 this.sharedDataService.setPlaceOfInterest(savePlace);
               });
             }
@@ -97,8 +95,6 @@ export class MapComponent implements AfterViewInit, OnInit {
               });
             }
 
-            
-              
             marker.on('popupclose', () => {
                   map.removeLayer(marker);
             });
@@ -112,55 +108,54 @@ export class MapComponent implements AfterViewInit, OnInit {
             let polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
             this.previousPolyline = polyline;
             map.fitBounds(polyline.getBounds());
+            map.setView(coordinates[0],7)
             const startMarker = L.marker(coordinates[0]).addTo(map!);
             this.previousStarterMarker = startMarker;
             const startPopupContent = `
               <div>
-                <p>Distancia: ${this.route.distance}km</p>
+                <p>Distancia: ${parseFloat(this.route.distance).toFixed(2)}km</p>
                 <p>Duración: ${this.route.duration}</p>
-                ${!routeSaved.price !== null ? `<p>Coste: ${routeSaved.price}</p>` : ''}
-                <button id="removeRoute">Quitar Ruta</button>
+                ${routeSaved.price !== null ? `<p>Coste: ${routeSaved.price}€</p>` : ''}
                 ${!this.route.id ? `<button id="guardarRuta">Guardar Ruta</button>` : ''}
               </div>
             `;
-            map.on('popupopen', () => {
-              const saveButton = document.getElementById('guardarRuta');
-              if (saveButton) {
-                saveButton.addEventListener('click', () => {
-                  const nameRoute = prompt('Introduce un nombre para la ruta:');
-                  if (nameRoute) {
-                    this.route.name = nameRoute;
-                    this.routeService.saveRoute(this.route).subscribe(
-                      (response) => {
-                          console.log('Vehículo guardado:', response);
-                      },
-                      (error) => {
-                          console.error('Error al guardar el vehículo:', error);
-                          // Aquí puedes manejar el error si es necesario
-                      }
-                    );
-                  }
-                });
-              }
-              const removeButton = document.getElementById('removeRoute');
-              if (removeButton) {
-                removeButton.addEventListener('click', () => {
-                  map.removeLayer(polyline);
-                  map.removeLayer(startMarker);
-                  map.closePopup();
-                });
-              }
-            });
+            console.log("StartPopup: ", startPopupContent)
+            console.log("StartMarker: ", startMarker)
+            // Configura el contenido del popup
+            startMarker.bindPopup(startPopupContent);
+                  
+            // Abre el popup
+            startMarker.openPopup();
+
+            const saveButton = document.getElementById('guardarRuta');
+            if (saveButton) {
+              saveButton.addEventListener('click', () => {
+                const nameRoute = prompt('Introduce un nombre para la ruta:');
+                if (nameRoute) {
+                  this.route.name = nameRoute;
+                  this.routeService.saveRoute(this.route).subscribe(
+                    (response) => {
+                      map.on('popupclose', () => {
+                        map.removeLayer(polyline);
+                        map.removeLayer(startMarker);
+                        this.sharedDataService.deleteRoute();
+                      });
+                    },
+                    (error) => {
+
+                    }
+                  );
+                }
+              });
+            }
             map.on('popupclose', () => {
               map.removeLayer(polyline);
               map.removeLayer(startMarker);
-              map.closePopup();
+              this.sharedDataService.deleteRoute();
             });
-            startMarker.bindPopup(startPopupContent).openPopup();
           }
         }      
       });
-      
     }
   }
   // Función para copiar texto al portapapeles
