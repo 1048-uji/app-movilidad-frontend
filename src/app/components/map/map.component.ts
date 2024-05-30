@@ -115,12 +115,10 @@ export class MapComponent implements AfterViewInit, OnInit {
               <div>
                 <p>Distancia: ${parseFloat(this.route.distance).toFixed(2)}km</p>
                 <p>Duración: ${this.route.duration}</p>
-                ${routeSaved.price !== null ? `<p>Coste: ${routeSaved.price}€</p>` : ''}
+                ${routeSaved.price !== null ? `<p>Coste: ${routeSaved.price}</p>` : ''}
                 ${!this.route.id ? `<button id="guardarRuta">Guardar Ruta</button>` : ''}
               </div>
             `;
-            console.log("StartPopup: ", startPopupContent)
-            console.log("StartMarker: ", startMarker)
             // Configura el contenido del popup
             startMarker.bindPopup(startPopupContent);
                   

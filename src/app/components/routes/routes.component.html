@@ -17,7 +17,7 @@
                     <div class="calculate-container">
                         Vehiculo:
                         <select #selectedVehicleId id="startSaved" name="startSaved" required>
-                            <option *ngFor="let vehicle of savedVehicles" [value]="vehicle.id">{{ vehicle.name }}</option>
+                            <option *ngFor="let vehicle of savedVehicles" [value]="vehicle.id+','+vehicle.carbType">{{ vehicle.name }}</option>
                         </select>
                         <button (click)="getPrice(route, selectedVehicleId.value)" class="popup-button">Calcular</button>
                     </div>

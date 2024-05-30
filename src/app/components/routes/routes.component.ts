@@ -9,7 +9,7 @@ import { RouteOptions } from '../../models/routeOptions.model';
 import { PlaceOfInterest } from '../../models/place-of-interest.model';
 import { PlaceOfInterestService } from '../../services/PlacesOfInterest.service';
 import { VehicleService } from '../../services/Vehicle.service';
-import { Vehicle } from '../../models/vehicle.model';
+import { CarbType, Vehicle } from '../../models/vehicle.model';
 
 @Component({
   selector: 'app-routes',
@@ -220,11 +220,12 @@ export class RoutesComponent implements OnInit {
     this.sharedDataService.setRoute(route, null);
   }
 
-  getPrice(route: Route, vehicleId: string){
-    console.log(vehicleId)
-    this.routeService.getRoutePrice(route, parseInt(vehicleId)).subscribe(
+  getPrice(route: Route, vehicle: string){
+    const vehicleData = vehicle.split(`,`);
+    this.routeService.getRoutePrice(route, parseInt(vehicleData[0])).subscribe(
       (response) => {
-          this.sharedDataService.setRoute(route, response);
+        const price = response + (vehicleData[1] === CarbType.Calories ? " kcal" : " €");
+        this.sharedDataService.setRoute(route, price);
       },
       (error) => {
           console.error('Error al obtener el precio: ', error);
