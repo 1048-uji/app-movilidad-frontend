@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +15,8 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   username: string = '';
+  token: string = '';
+  
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -23,10 +26,18 @@ export class RegisterComponent {
       password: this.password,
       username: this.username
     };
-
-    this.http.post<any>('https://appmovilidad.onrender.com/auth/register', requestBody)
+//https://appmovilidad.onrender.com/auth/register
+    this.http.post<User>('https://appmovilidad.onrender.com/auth/register', requestBody)
       .subscribe(response => {
-        this.router.navigate(['/login']);
+        const login: {email: string, password: string} = {email: response.email, password: requestBody.password}
+        this.http.post<any>('https://appmovilidad.onrender.com/auth/login', login)
+        .subscribe(response => {
+            this.token = response.token;
+            sessionStorage.setItem('token', this.token);
+            this.router.navigate(['/map']);
+          }, error => {
+            console.error('Error en la solicitud de inicio de sesión:', error);
+        });
       });
   }
 }

@@ -8,7 +8,7 @@ import { User } from '../models/user.model';
 export class UserService {
   private apiUrl = 'https://appmovilidad.onrender.com';
   private testAPI = 'http://localhost:3000';
-  private using = this.testAPI;
+  private using = this.apiUrl;
 
   constructor(private http: HttpClient) { }
 
