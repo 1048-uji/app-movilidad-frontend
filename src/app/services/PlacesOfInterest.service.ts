@@ -9,7 +9,7 @@ import { PlaceOfInterest } from '../models/place-of-interest.model';
 export class PlaceOfInterestService {
   private apiUrl = 'https://appmovilidad.onrender.com';
   private testAPI = 'http://localhost:3000';
-  private using = this.apiUrl
+  private using = this.testAPI
 
   constructor(private http: HttpClient) { }
 

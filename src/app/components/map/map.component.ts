@@ -133,6 +133,7 @@ export class MapComponent implements AfterViewInit, OnInit {
                   this.route.name = nameRoute;
                   this.routeService.saveRoute(this.route).subscribe(
                     (response) => {
+                      console.log(response)
                       map.on('popupclose', () => {
                         map.removeLayer(polyline);
                         map.removeLayer(startMarker);
@@ -140,7 +141,7 @@ export class MapComponent implements AfterViewInit, OnInit {
                       });
                     },
                     (error) => {
-
+                      console.log(error)
                     }
                   );
                 }

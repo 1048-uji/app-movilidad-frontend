@@ -16,6 +16,8 @@ export class RegisterComponent {
   password: string = '';
   username: string = '';
   token: string = '';
+  private apiUrl = 'https://appmovilidad.onrender.com';
+  private testAPI = 'http://localhost:3000';
   
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -27,10 +29,10 @@ export class RegisterComponent {
       username: this.username
     };
 //https://appmovilidad.onrender.com/auth/register
-    this.http.post<User>('https://appmovilidad.onrender.com/auth/register', requestBody)
+    this.http.post<User>(this.testAPI+'/auth/register', requestBody)
       .subscribe(response => {
         const login: {email: string, password: string} = {email: response.email, password: requestBody.password}
-        this.http.post<any>('https://appmovilidad.onrender.com/auth/login', login)
+        this.http.post<any>(this.testAPI+'/auth/login', login)
         .subscribe(response => {
             this.token = response.token;
             sessionStorage.setItem('token', this.token);

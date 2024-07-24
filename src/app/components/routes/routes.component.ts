@@ -163,7 +163,6 @@ export class RoutesComponent implements OnInit {
   deleteRoute(id: number){
     this.routeService.deleteRoute(id).subscribe(
       () => {
-        console.log('Éxito al eliminar:');
         this.loadRoutes();
       },
       (error) => {
@@ -202,7 +201,6 @@ export class RoutesComponent implements OnInit {
     options.endLat = end.lat;
     options.endLon = end.lon;
     options.endAddress  = end.address;
-    console.log(options)
     this.routeService.createRoute(options).subscribe(
       (response) => {
           const route: Route = response
