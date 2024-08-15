@@ -3,11 +3,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -16,6 +17,7 @@ export class RegisterComponent {
   password: string = '';
   username: string = '';
   token: string = '';
+  errorMsg: string | null = null;
   private apiUrl = 'https://appmovilidad.onrender.com';
   private testAPI = 'http://localhost:3000';
   
@@ -24,11 +26,9 @@ export class RegisterComponent {
 
   register() {
     const requestBody = {
-      email: this.email,
-      password: this.password,
-      username: this.username
+      username: this.username,
+      password: this.password      
     };
-//https://appmovilidad.onrender.com/auth/register
     this.http.post<User>(this.testAPI+'/auth/register', requestBody)
       .subscribe(response => {
         const login: {email: string, password: string} = {email: response.email, password: requestBody.password}
@@ -36,9 +36,11 @@ export class RegisterComponent {
         .subscribe(response => {
             this.token = response.token;
             sessionStorage.setItem('token', this.token);
+            this.errorMsg = null;
             this.router.navigate(['/map']);
           }, error => {
-            console.error('Error en la solicitud de inicio de sesión:', error);
+            console.error('Error en la solicitud de registro:', error);
+            this.errorMsg = error.error.statusCode + ' ' + error.error.message;
         });
       });
   }

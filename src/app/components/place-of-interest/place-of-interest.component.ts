@@ -20,12 +20,12 @@ export class PlaceOfInterestComponent implements OnInit {
   editingPlace: PlaceOfInterest = new PlaceOfInterest();
   showAddForm: boolean = false;
   newPlace= new PlaceOfInterest();
-  errorMsg: string = '';
+  errorMsg: string | null = null;
 
   constructor(private placeOfInterestService: PlaceOfInterestService, private sharedDataService: SharedDataService) {}
 
   ngOnInit(): void {
-      this.loadPlacesOfInterest(); // Método para cargar los lugares de interés del usuario
+      this.loadPlacesOfInterest();
       this.sharedDataService.placeOfInterest$.subscribe((placeOfInterest) => {
         if (placeOfInterest !== undefined && placeOfInterest !== null){
           console.log(placeOfInterest)
@@ -36,33 +36,32 @@ export class PlaceOfInterestComponent implements OnInit {
       });
     }
 
-  // Método para cargar los lugares de interés del usuario desde el backend
   loadPlacesOfInterest() {
     this.placeOfInterestService.getPlacesOfInterest().subscribe(
       (data) => {
         this.placesOfInterest = data;
-        this.filteredPlacesOfInterest = this.sortPlacesByFav(data); // Ordenar por place.fav
+        this.errorMsg = null;
+        this.filteredPlacesOfInterest = this.sortPlacesByFav(data);
       },
       (error) => {
         console.error('Error al obtener los lugares de interés:', error);
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
   
   sortPlacesByFav(places: PlaceOfInterest[]): PlaceOfInterest[] {
-    // Ordenar por place.fav, colocando los favoritos primero
     return places.sort((a, b) => {
       if (a.fav && !b.fav) {
-        return -1; // a es favorito, b no es favorito, a debe ir antes que b
+        return -1;
       } else if (!a.fav && b.fav) {
-        return 1; // b es favorito, a no es favorito, b debe ir antes que a
+        return 1;
       } else {
-        return 0; // Ambos son favoritos o ambos no son favoritos, no es necesario cambiar el orden
+        return 0;
       }
     });
   }
 
-  // Método de búsqueda
   search() {
       this.filteredPlacesOfInterest = (this.searchTerm === '' ? this.placesOfInterest : this.placesOfInterest.filter(place =>
         place.name.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -74,10 +73,11 @@ export class PlaceOfInterestComponent implements OnInit {
     this.placeOfInterestService.toggleFavorite(place).subscribe(
       (response) => {
         this.loadPlacesOfInterest();
+        this.errorMsg = null;
       },
       (error) => {
         console.error('Error al cambiar el estado de favorito:', error);
-        // Manejar errores aquí
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -94,11 +94,12 @@ export class PlaceOfInterestComponent implements OnInit {
     console.log("editando lugar", this.editingPlace);
     this.placeOfInterestService.editPlace(this.editingPlace).subscribe((response) =>{
       this.editingPlace = new PlaceOfInterest()
+      this.errorMsg = null;
       this.loadPlacesOfInterest();
       },
       (error) => {
         console.error('Error al cambiar el estado de favorito:', error);
-        // Manejar errores aquí
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -108,11 +109,11 @@ export class PlaceOfInterestComponent implements OnInit {
       () => {
         console.log('Éxito al eliminar:');
         this.loadPlacesOfInterest();
-        // Realizar acciones adicionales si es necesario
+        this.errorMsg = null;
       },
       (error) => {
         console.error('Error al eliminar', error);
-        // Manejar errores aquí
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );;
   }
@@ -120,43 +121,40 @@ export class PlaceOfInterestComponent implements OnInit {
   cancelSave(){
     this.newPlace= new PlaceOfInterest();
     this.showAddForm = false;
-    this.errorMsg = '';
+    this.errorMsg = null;
     this.sharedDataService.deletePlaceofInterest();
   }
 
   addPlace(place: PlaceOfInterest){
     if (place.lat && place.lon) {
-      // Si existen las coordenadas, llama al método addByCoordinates del servicio
       this.placeOfInterestService.addByCoordinates(place).subscribe(
           (response) => {
               console.log('Lugar guardado:', response);
               this.showAddForm = false;
               this.loadPlacesOfInterest()
               this.sharedDataService.deletePlaceofInterest()
-              this.errorMsg='';
+              this.errorMsg = null;
           },
           (error) => {
               console.error('Error al guardar el lugar:', error);
-              // Aquí puedes manejar el error si es necesario
+              this.errorMsg = error.error.statusCode + ' ' + error.error.message;
           }
       );
   } else if (place.address) {
-      // Si no hay coordenadas pero hay dirección, llama al método addByAddress del servicio
       this.placeOfInterestService.addByAddress(place).subscribe(
           (response) => {
               console.log('Lugar guardado:', response);
               this.showAddForm = false;
               this.loadPlacesOfInterest()
               this.sharedDataService.deletePlaceofInterest();
-              this.errorMsg = '';
+              this.errorMsg = null;
           },
           (error) => {
               console.error('Error al guardar el lugar:', error);
-              // Aquí puedes manejar el error si es necesario
+              this.errorMsg = error.error.statusCode + ' ' + error.error.message;
           }
       );
   } else {
-      // Si no hay ni coordenadas ni dirección, muestra un mensaje de error en el HTML
       this.errorMsg = 'Se necesitan coordenadas o una dirección para guardar el lugar.';
   }
   }

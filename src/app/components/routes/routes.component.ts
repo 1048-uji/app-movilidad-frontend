@@ -27,7 +27,7 @@ export class RoutesComponent implements OnInit {
   showAddForm: boolean = false;
   newRoute = new Route();
   editingRoute: Route = new Route();
-  errorMsg: string = '';
+  errorMsg: string | null = null;
   strategyOptions: string[] = Object.values(Strategy);
   newRouteOptions: RouteOptions = new RouteOptions();
   newStartPlace: PlaceOfInterest = new PlaceOfInterest();
@@ -50,23 +50,23 @@ export class RoutesComponent implements OnInit {
   loadVehicles() {
     this.vehicleService.getVehicles().subscribe(
       (data) => {
-        this.savedVehicles = this.sortVehiclesByFavorite(data); // Ordenar por vehicle.favorite
+        this.savedVehicles = this.sortVehiclesByFavorite(data);
       },
       (error) => {
         console.error('Error al obtener los vehículos:', error);
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
   
   sortVehiclesByFavorite(vehicles: Vehicle[]): Vehicle[] {
-    // Ordenar por vehicle.favorite, colocando los favoritos primero
     return vehicles.sort((a, b) => {
       if (a.fav && !b.fav) {
-        return -1; // a es favorito, b no es favorito, a debe ir antes que b
+        return -1;
       } else if (!a.fav && b.fav) {
-        return 1; // b es favorito, a no es favorito, b debe ir antes que a
+        return 1; 
       } else {
-        return 0; // Ambos son favoritos o ambos no son favoritos, no es necesario cambiar el orden
+        return 0;
       }
     });
   }
@@ -74,23 +74,23 @@ export class RoutesComponent implements OnInit {
   loadPlacesOfInterest() {
     this.placeOfInterestService.getPlacesOfInterest().subscribe(
       (data) => {
-        this.savedPlacesOfInterest = this.sortPlacesByFav(data); // Ordenar por place.fav
+        this.savedPlacesOfInterest = this.sortPlacesByFav(data);
       },
       (error) => {
         console.error('Error al obtener los lugares de interés:', error);
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
   
   sortPlacesByFav(places: PlaceOfInterest[]): PlaceOfInterest[] {
-    // Ordenar por place.fav, colocando los favoritos primero
     return places.sort((a, b) => {
       if (a.fav && !b.fav) {
-        return -1; // a es favorito, b no es favorito, a debe ir antes que b
+        return -1; 
       } else if (!a.fav && b.fav) {
-        return 1; // b es favorito, a no es favorito, b debe ir antes que a
+        return 1;
       } else {
-        return 0; // Ambos son favoritos o ambos no son favoritos, no es necesario cambiar el orden
+        return 0;
       }
     });
   }
@@ -100,9 +100,11 @@ export class RoutesComponent implements OnInit {
       (data) => {
         this.routes = data;
         this.filteredRoutes = this.sortRoutesByFavorite(data);
+        this.errorMsg = null;
       },
       (error) => {
         console.error('Error al obtener las rutas:', error);
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -131,9 +133,11 @@ export class RoutesComponent implements OnInit {
     this.routeService.toggleFavorite(route).subscribe(
       (response) => {
         this.loadRoutes();
+        this.errorMsg = null;
       },
       (error) => {
         console.error('Error al cambiar el estado de favorito:', error);
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -152,10 +156,11 @@ export class RoutesComponent implements OnInit {
       this.editingRoute = new Route();
       this.showAddForm = false;
       this.showEditForm = false;
-      this.errorMsg = '';
+      this.errorMsg = null;
       },
       (error) => {
         console.error('Error al cambiar el estado de favorito:', error);
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -164,9 +169,11 @@ export class RoutesComponent implements OnInit {
     this.routeService.deleteRoute(id).subscribe(
       () => {
         this.loadRoutes();
+        this.errorMsg = null;
       },
       (error) => {
         console.error('Error al eliminar', error);
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -176,7 +183,7 @@ export class RoutesComponent implements OnInit {
     this.editingRoute = new Route();
     this.showAddForm = false;
     this.showEditForm = false;
-    this.errorMsg = '';
+    this.errorMsg = null;
 }
 
   addRoute(start: PlaceOfInterest, end: PlaceOfInterest, options: RouteOptions, startCoords: string, endCoords: string){
@@ -206,11 +213,11 @@ export class RoutesComponent implements OnInit {
           const route: Route = response
           this.showAddForm = false;
           this.sharedDataService.setRoute(route, null);
-          this.errorMsg='';
+          this.errorMsg = null;
       },
       (error) => {
           console.error('Error al crear la ruta: ', error);
-          // Aquí puedes manejar el error si es necesario
+          this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -224,10 +231,11 @@ export class RoutesComponent implements OnInit {
       (response) => {
         const price = response + (vehicleData[1] === CarbType.Calories ? " kcal" : " €");
         this.sharedDataService.setRoute(route, price);
+        this.errorMsg = null;
       },
       (error) => {
           console.error('Error al obtener el precio: ', error);
-          // Aquí puedes manejar el error si es necesario
+          this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }

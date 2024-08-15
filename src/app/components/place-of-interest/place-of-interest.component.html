@@ -27,6 +27,7 @@
                     </div>
                 </li>
             </ul>
+            <p *ngIf="errorMsg">{{ errorMsg }}</p>
         </div>
     </div>
     <div class="form-container" *ngIf="showAddForm">
@@ -50,9 +51,7 @@
                 <button type="button" id="cancelButton" (click)="cancelSave()">Cancelar</button>
                 <button type="submit" id="save" (click)="addPlace(newPlace)">Guardar</button>
             </div>
-            <div *ngIf="errorMsg" class="error-message">
-                {{ errorMsg }}
-              </div>
+            <p *ngIf="errorMsg">{{ errorMsg }}</p>
         </form>
     </div>    
 </div>

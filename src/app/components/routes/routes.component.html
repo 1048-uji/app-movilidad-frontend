@@ -29,9 +29,11 @@
                     </div>
                 </li>
             </ul>
+            <p *ngIf="errorMsg">{{ errorMsg }}</p>
             <div *ngIf="showEditForm" class="popup-container">
                 <p>Introduce el nuevo nombre</p>
                 <input type="text" [(ngModel)]="newName" class="popup-content">
+                <p *ngIf="errorMsg">{{ errorMsg }}</p>
                 <div class="buttons-container">
                     <button (click)="editRoute(newName)" class="popup-button">Aceptar</button>
                     <button (click)="showEditForm = false" class="popup-button">Cancelar</button>
@@ -44,15 +46,12 @@
         <form id="routeForm" (submit)="addRoute(newStartPlace, newEndPlace, newRouteOptions, startCoords, endCoords)">
             <div class="form-group">
                 <label for="startType">Inicio:</label>
-                <!--(change)="onStartTypeChange()"-->
                 <select [(ngModel)]="startType" id="startType" name="startType" >
                     <option value="saved">Place of Interest guardado</option>
                     <option value="new">Nueva dirección/coordenadas</option>
                 </select>
             </div>
             <div *ngIf="startType === 'saved'">
-                <!-- Aquí puedes mostrar un desplegable o una lista de los Place of Interest guardados -->
-                <!-- Ejemplo: -->
                 <div class="form-group">
                     <label for="startSaved">Selecciona un lugar guardado:</label>
                     <select [(ngModel)]="newStartPlace" id="startSaved" name="startSaved" required>
@@ -61,8 +60,6 @@
                 </div>
             </div>
             <div *ngIf="startType === 'new'">
-                <!-- Aquí puedes mostrar campos para que el usuario introduzca una nueva dirección/coordenadas -->
-                <!-- Ejemplo: -->
                 <div class="form-group">
                     <label for="startAddress">Dirección:</label>
                     <input type="text" [(ngModel)]="newStartPlace.address" id="startAddress" name="startAddress" placeholder="Dirección">
@@ -72,7 +69,6 @@
                     <input type="text" [(ngModel)]="startCoords" id="startLatitude" name="startLatitude" placeholder="Latitud,Longitud">
                 </div>
             </div>
-            <!-- Repite el mismo proceso para el campo de fin -->
             <div class="form-group">
                 <label for="endType">Fin:</label>
                 <select [(ngModel)]="endType" id="endType" name="endType">
@@ -81,7 +77,6 @@
                 </select>
             </div>
             <div *ngIf="endType === 'saved'">
-                <!-- Mostrar lista de Place of Interest guardados -->
                 <div class="form-group">
                     <label for="endSaved">Selecciona un Place of Interest guardado:</label>
                     <select [(ngModel)]="newEndPlace" id="endSaved" name="endSaved" required>
@@ -90,7 +85,6 @@
                 </div>
             </div>
             <div *ngIf="endType === 'new'">
-                <!-- Campos para introducir una nueva dirección/coordenadas -->
                 <div class="form-group">
                     <label for="endAddress">Dirección:</label>
                     <input type="text" [(ngModel)]="newEndPlace.address" id="endAddress" name="endAddress" placeholder="Dirección">
@@ -125,9 +119,7 @@
                 <button type="button" id="cancelButton" (click)="cancelSave()">Cancelar</button>
                 <button type="submit" id="save">Crear</button>
             </div>
-            <div *ngIf="errorMsg" class="error-message">
-                {{ errorMsg }}
-            </div>
+            <p *ngIf="errorMsg">{{ errorMsg }}</p>
         </form>
     </div>    
 </div>

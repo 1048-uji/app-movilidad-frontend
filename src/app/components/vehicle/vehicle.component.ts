@@ -21,7 +21,7 @@ export class VehicleComponent implements OnInit {
   showAddForm: boolean = false;
   newVehicle = new Vehicle();
   editingVehicle: Vehicle = new Vehicle();
-  errorMsg: string = '';
+  errorMsg: string | null = null;
   carbTypeOptions: string[] = Object.values(CarbType);
 
   constructor(private vehicleService: VehicleService, private sharedDataService: SharedDataService) {}
@@ -30,33 +30,31 @@ export class VehicleComponent implements OnInit {
       this.loadVehicles(); 
   }
 
-  // Método para cargar los vehículos del usuario desde el backend
   loadVehicles() {
     this.vehicleService.getVehicles().subscribe(
       (data) => {
         this.vehicles = data;
-        this.filteredVehicles = this.sortVehiclesByFavorite(data); // Ordenar por vehicle.favorite
+        this.filteredVehicles = this.sortVehiclesByFavorite(data);
       },
       (error) => {
         console.error('Error al obtener los vehículos:', error);
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
   
   sortVehiclesByFavorite(vehicles: Vehicle[]): Vehicle[] {
-    // Ordenar por vehicle.favorite, colocando los favoritos primero
     return vehicles.sort((a, b) => {
       if (a.fav && !b.fav) {
-        return -1; // a es favorito, b no es favorito, a debe ir antes que b
+        return -1; 
       } else if (!a.fav && b.fav) {
-        return 1; // b es favorito, a no es favorito, b debe ir antes que a
+        return 1; 
       } else {
-        return 0; // Ambos son favoritos o ambos no son favoritos, no es necesario cambiar el orden
+        return 0; 
       }
     });
   }
 
-  // Método de búsqueda
   search() {
       this.filteredVehicles = (this.searchTerm === '' ? this.vehicles : this.vehicles.filter(vehicle =>
         vehicle.name.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -68,16 +66,16 @@ export class VehicleComponent implements OnInit {
     this.vehicleService.toggleFavorite(vehicle).subscribe(
       (response) => {
         this.loadVehicles();
+        this.errorMsg = null;
       },
       (error) => {
         console.error('Error al cambiar el estado de favorito:', error);
-        // Manejar errores aquí
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
 
   showEditInput(vehicle: Vehicle) {
-    // Asignar el vehículo que se está editando y mostrar el formulario de edición
     this.editingVehicle = vehicle;
     this.showEditForm = true;
 }
@@ -91,11 +89,11 @@ export class VehicleComponent implements OnInit {
       this.editingVehicle = new Vehicle();
       this.showAddForm = false;
       this.showEditForm = false;
-      this.errorMsg = '';
+      this.errorMsg = null;
       },
       (error) => {
         console.error('Error al cambiar el estado de favorito:', error);
-        // Manejar errores aquí
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -105,11 +103,11 @@ export class VehicleComponent implements OnInit {
       () => {
         console.log('Éxito al eliminar:');
         this.loadVehicles();
-        // Realizar acciones adicionales si es necesario
+        this.errorMsg = null;
       },
       (error) => {
         console.error('Error al eliminar', error);
-        // Manejar errores aquí
+        this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
@@ -128,11 +126,11 @@ export class VehicleComponent implements OnInit {
           console.log('Vehículo guardado:', response);
           this.showAddForm = false;
           this.loadVehicles();
-          this.errorMsg='';
+          this.errorMsg = null;
       },
       (error) => {
           console.error('Error al guardar el vehículo:', error);
-          // Aquí puedes manejar el error si es necesario
+          this.errorMsg = error.error.statusCode + ' ' + error.error.message;
       }
     );
   }
